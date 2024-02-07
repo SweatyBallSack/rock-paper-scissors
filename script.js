@@ -14,7 +14,7 @@ function getComputerChoice() {
 }
 
 //console.log(getComputerChoice());
-
+let result;
 function playRound(playerSelection,computerSelection) {
     let playerChoice = prompt("Enter your choice (rock/paper/scissors)").toLowerCase();
     let playerValue;
@@ -42,27 +42,43 @@ function playRound(playerSelection,computerSelection) {
     }
 
     if(playerValue === computerValue) {
+        result = "Draw";
         return "You Drew! " + playerChoice + " draws with " + computerChoice;
     }
     else if (playerValue === 1 && computerValue === 2 || playerValue === 2 && computerValue === 3 
         || playerValue === 3 && computerValue === 1) {
+            result = "Loss";
         return "You Lose! " + computerChoice + " beats " + playerChoice;
     }
     else {
+        result = "Win";
         return "You Win! " + playerChoice + " beats " + computerChoice;
     }
 }
 
-console.log(playRound());
+//console.log(playRound());
+
 
 function playGame() {
-    let playerScore;
-    let computerScore;
-    playRound();
-    playRound();
-    playRound();
-    playRound();
-    playRound();
+    let playerScore = 0;
+    let computerScore = 0;
+    let totalDraws = 0;
+    for(let i = 0; i < 5; i++) {
+        playRound();
+        if(result === "Draw") {
+            totalDraws++;
+            console.log("You drew!")
+        }
+        else if(result === "Loss") {
+            computerScore++;
+            console.log("You lost!")
+        }
+        else if(result === "Win") {
+            playerScore++;
+            console.log("You won!")
+        }
+    }
+    return "The score for 5 rounds of rock-paper-scissors was: Win: " + playerScore + " , Losses: " + computerScore + " , Draws: " + totalDraws;
 }
 
-
+console.log(playGame())
