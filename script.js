@@ -14,12 +14,15 @@ function getComputerChoice() {
 }
 
 //console.log(getComputerChoice());
+
 let result;
-function playRound(playerSelection,computerSelection) {
-    let playerChoice = prompt("Enter your choice (rock/paper/scissors)").toLowerCase();
+
+function playRound(playerSelection) {
+
+    let playerChoice = playerSelection.toLowerCase().trim()//prompt("Enter your choice (rock/paper/scissors)").toLowerCase().trim();
     let playerValue;
     let computerChoice = getComputerChoice();
-    console.log(computerChoice);
+    console.log("Computer Choice: " + computerChoice);
     let computerValue;
     if(playerChoice === "rock") {
         playerValue = 1;
@@ -56,29 +59,88 @@ function playRound(playerSelection,computerSelection) {
     }
 }
 
-//console.log(playRound());
+let startButton = document.querySelector('#start-button');
 
+startButton.addEventListener('click', (event) => {
+    let gameStartedMessage = document.createElement('div');
+    gameStartedMessage.textContent = "The game has started! (First to five wins)";
+    gameResult.appendChild(gameStartedMessage);
 
-function playGame() {
-    let playerScore = 0;
-    let computerScore = 0;
+    buttons.forEach(button => {
+        button.addEventListener('click', playRoundAndUpdate)
+    })
+    let playerWins = 0;
+    let computerWins = 0;
     let totalDraws = 0;
-    for(let i = 0; i < 5; i++) {
-        playRound();
+
+    function playRoundAndUpdate(event) {
+        if(!(playerWins == 5 || computerWins == 5)) {
+                
+        playRound(event.target.innerText);
+
         if(result === "Draw") {
             totalDraws++;
             console.log("You drew!")
         }
         else if(result === "Loss") {
-            computerScore++;
+            computerWins++;
             console.log("You lost!")
         }
         else if(result === "Win") {
-            playerScore++;
-            console.log("You won!")
+            playerWins++;
+            console.log("You Won!")
+        }
+                
+             
+        updatedGameResult.textContent = "(Player Score : Draws : Computer Score) " + 
+        playerWins + " : " + totalDraws + " : " + computerWins;
+        
+        gameResult.appendChild(updatedGameResult);
         }
     }
+})
+   
+
+const buttons = document.querySelectorAll('button');
+
+
+
+
+let gameResult = document.querySelector('#game-result');
+let updatedGameResult = document.createElement('div');
+
+function playGame() {
+    let playerWins = 0;
+    let computerWins = 0;
+    let totalDraws = 0;
+
+    
+    while(!(playerWins == 5 || computerWins == 5)) {
+        
+
+        if(result === "Draw") {
+            totalDraws++;
+            console.log("You drew!")
+        }
+        else if(result === "Loss") {
+            computerWins++;
+            console.log("You lost!")
+        }
+        else if(result === "Win") {
+            playerWins++;
+            console.log("You Won!")
+        }
+        
+            
+        
+
+        updatedGameResult.textContent = "(Player Score : Draws : Computer Score) " + 
+        playerWins + " : " + totalDraws + " : " + computerWins;
+
+        gameResult.appendChild(updatedGameResult);
+    }
+
     return "The score for 5 rounds of rock-paper-scissors was: Win: " + playerScore + " , Losses: " + computerScore + " , Draws: " + totalDraws;
 }
 
-console.log(playGame())
+// console.log(playGame())
